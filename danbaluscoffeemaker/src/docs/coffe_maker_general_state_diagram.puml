@@ -1,0 +1,35 @@
+@startuml
+
+scale 900 width
+
+[*] --> State1
+
+state State1 {
+    state "Init" as condition1
+    condition1 : filterHolderEmpty
+    condition1 : boilerHeaterOFF
+    condition1 : coffeeGrounds
+    condition1 : waterEmpty
+}
+/''/
+state State2 {
+    state "Stop"
+}
+
+state State3{
+    state "Finish" as condition2
+}
+
+State1 --> State1 : boilerIsEmpty or (warmerEmpty) or boilerHeaterOFF or (not coffeeGrounds) or (BrewButtonNotPressed)
+State1 --> State2
+
+state join_state <<join>>
+
+State2 --> join_state : pressureRelief
+State1 --> join_state : boilerIsNotEmpty and (not warmerEmpty) and boilerHeaterON and ( coffeeGrounds) and BrewButtonPressed
+
+join_state --> State3
+
+State3 --> [*]
+
+@enduml

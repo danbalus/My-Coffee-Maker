@@ -1,0 +1,52 @@
+@startuml
+
+[*] --> State1 : prepareCoffee
+
+state State1 {
+
+      state "Filter Holder" as long2
+      state "Coffee status" as long3
+      state "Status Water in WaterFilter" as long4
+      state "Status Brew Button" as long5
+
+      [*] --> long2
+      long2 --> long2 : FilterNotInFilterHolder
+      long2 --> long3 : FilterInFilterHolder
+      long3 --> long3 : filterHolderEmpty??
+      long3 --> long4 : filterHolderHaveCoffeeGrounds??
+      long4 --> long4 : BOILER_EMPTY
+      long4 --> long5 : BOILER_NOT_EMPTY
+      long5 --> long5 : BREW_BUTTON_NOT_PUSHED
+      long5 --> [*] : BREW_BUTTON_PUSHED
+}
+
+state State2 {
+    state "In process of making coffee" as condition2
+}
+
+state State3{
+    state "Finish" as condition3
+}
+state State4{
+    state "Return" as condition4
+}
+state State5{
+    state "Warmer ON" as condition5
+}
+state State6{
+    state "Indicator ON" as condition6
+}
+
+State1 --> State2
+State2 --> State5 : warmerOn and potExist
+State2 --> State4 : filterHolderEmpty or BOILER_EMPTY or potNotExist
+State4 --> State1 : pressureRelief
+
+State2 --> State6
+State6 --> State3
+State3 --> State1 : prepareCoffee
+
+State3 --> [*] : indicatorOFF and turnOFFMachine
+State5 --> State3 : potNotExist or warmerOFF
+
+@enduml

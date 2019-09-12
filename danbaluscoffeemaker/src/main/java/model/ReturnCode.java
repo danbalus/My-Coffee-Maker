@@ -1,0 +1,9 @@
+package model;
+
+public enum ReturnCode {
+    BREW_BUTTON_PUSHED_CODE,
+    BOILER_OFF_CODE,
+    BOILER_EMPTY_CODE,
+    WARMER_EMPTY_CODE,
+    BREW_BUTTON_PUSHED_AGAIN_CODE,
+}
